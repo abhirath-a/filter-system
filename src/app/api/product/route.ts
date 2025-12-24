@@ -20,11 +20,11 @@ export const POST = async (req: NextRequest) => {
       return Response.json({ error: "not found" }, { status: 404 });
     }
 
-    const relatedProducts = await db.query({
-      topK: 3,
+    const relatedProducts = (await db.query({
+      topK: 4,
       vector: product?.vector ?? [0, 0, 0],
       includeMetadata: true,
-    });
+    })).slice(1);
     return Response.json({ product, relatedProducts, error: null });
   } catch (error) {
     console.error(error);
